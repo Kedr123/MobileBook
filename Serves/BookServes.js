@@ -24,23 +24,26 @@ export default class BookServes {
         let path = linkOpfFile.split('/')
         path.pop()
         path = path.join('/')+'/'
-
-        let imgXml = await BookServes.readTextFile(path+opfXmlDom.getSelectByTagName('reference').attributes.href)
-        imgXml = new XmlParser(imgXml)
-
-        console.log(imgXml.getXmlDocument())
         let cover
-        if(imgXml.getSelectByTagName('img')){
-            cover = path+imgXml.getSelectByTagName('img').attributes.src
-        }
-        else {
-            // await FileSystem.readDirectoryAsync('file:///data/user/0/ModileBook.apk/cache/DocumentPicker/default.png').then( async (uri)=>{
-            //     arrUri=uri
-            // })
+        try {
+            let imgXml = await BookServes.readTextFile(path + opfXmlDom.getSelectByTagName('reference').attributes.href)
+            imgXml = new XmlParser(imgXml)
+
+            console.log(imgXml.getXmlDocument())
+
+            if (imgXml.getSelectByTagName('img')) {
+                cover = path + imgXml.getSelectByTagName('img').attributes.src
+            } else {
+                // await FileSystem.readDirectoryAsync('file:///data/user/0/ModileBook.apk/cache/DocumentPicker/default.png').then( async (uri)=>{
+                //     arrUri=uri
+                // })
 
 
+                cover = 'null'
+
+            }
+        }catch (e) {
             cover = 'null'
-
         }
 
         let book = {

@@ -1,35 +1,24 @@
-import React, {useEffect, useRef} from "react";
-import {
-    Image,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
-import {Animated} from "react-native";
+import React, {useEffect, useRef} from "react"
+import {Image, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
-export default function Navbar({setMenu, menu, setConfig, config}) {
-
-    const setings = () => {
-        setMenu(!menu);
+export default function BookHeader({navigation, nameBook, setConfig, config}) {
+    const back = () => {
+        navigation.goBack();
     }
 
     const isConfig = () => {
         setConfig(!config);
     }
 
-
-
     return (
         <View style={styles.container}>
             <View style={styles.navbar}>
-                <TouchableOpacity onPress={setings}>
-                    <Image style={styles.icon} source={require('./../assets/Icons/Menu.png')}/>
+                <TouchableOpacity onPress={back}>
+                    <Image style={styles.icon} source={require('./../assets/Icons/back.png')}/>
                 </TouchableOpacity>
-                <Text style={styles.text}>Книжная полка</Text>
+                <Text style={styles.text}>{nameBook}</Text>
                 <TouchableOpacity onPress={isConfig}>
-                    <Animated.Image style={{...styles.icon}} source={require('./../assets/Icons/configuration.png')}/>
+                    <Image style={styles.icon} source={require('./../assets/Icons/configuration.png')}/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -41,12 +30,13 @@ const styles = StyleSheet.create({
 
         // flex: 1,
         // height: 10 + '%',
-        paddingTop: StatusBar.currentHeight,
+        // paddingTop: StatusBar.currentHeight,
         width: 100 + '%',
         backgroundColor: '#E9EEE0',
         alignItems: 'center',
         justifyContent: 'center',
-        elevation:10
+        // elevation:10,
+        // paddingTop: StatusBar.currentHeight,
     },
     text: {
         fontFamily: 'RobotoSlab-Regular',

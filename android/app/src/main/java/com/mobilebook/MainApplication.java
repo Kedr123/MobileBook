@@ -1,4 +1,4 @@
-package ModileBook.apk;
+package com.mobilebook;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,7 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import ModileBook.apk.newarchitecture.MainApplicationReactNativeHost;
+import com.mobilebook.newarchitecture.MainApplicationReactNativeHost;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
@@ -88,7 +88,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("ModileBook.apk.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.mobilebook.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

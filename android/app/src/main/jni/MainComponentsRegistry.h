@@ -13,7 +13,7 @@ class MainComponentsRegistry
  public:
   // Adapt it to the package you used for your Java class.
   constexpr static auto kJavaDescriptor =
-      "LModileBook/apk/newarchitecture/components/MainComponentsRegistry;";
+      "Lcom/mobilebook/newarchitecture/components/MainComponentsRegistry;";
 
   static void registerNatives();
 

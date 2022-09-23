@@ -35,6 +35,14 @@
       "eas": {
         "projectId": "f6e9aad8-8d6f-4014-a74f-d40690b08083"
       }
-    }
+    },
+    _internal: {
+    isDebug: true,
+    projectRoot: '/home/kedr/Документы/Mobile_project/MobileBook',
+    dynamicConfigPath: null,
+    staticConfigPath: '/home/kedr/Документы/Mobile_project/MobileBook/app.json',
+    packageJsonPath: '/home/kedr/Документы/Mobile_project/MobileBook/package.json'
+  }
+
   }
 }

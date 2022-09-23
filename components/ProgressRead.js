@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
         top:15+'%',
     },
     container:{
-        width:100+'%',
-        position: "relative",
+        flexGrow:1,
+        // flex:1,
         height:100+'%',
 
     },

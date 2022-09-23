@@ -1,4 +1,4 @@
-package ModileBook.apk.newarchitecture.modules;
+package com.mobilebook.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

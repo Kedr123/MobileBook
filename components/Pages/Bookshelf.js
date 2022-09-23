@@ -7,8 +7,9 @@ import BDBookServes from "../../BDServes/BDBookServes";
 import * as SQLite from "expo-sqlite";
 import FileServes from "../../Serves/FileServes";
 import FilePickerManager from "react-native-file-picker";
+import Loader from "../Loader";
 
-const db = SQLite.openDatabase('MobileBook1.db', '', '', '', (tx) => {
+const db = SQLite.openDatabase('MobileBookBD.db', '', '', '', (tx) => {
     console.log("db connect true")
 });
 
@@ -16,6 +17,7 @@ const db = SQLite.openDatabase('MobileBook1.db', '', '', '', (tx) => {
 export default function Bookshelf({navigation}) {
 
     const [books, setBooks] = useState([]);
+    const [louder, setLouder] = useState(false);
 
     const [isMenu, setIsMenu] = useState(true);
     const [isConfig, setIsConfig] = useState(false);
@@ -58,13 +60,16 @@ export default function Bookshelf({navigation}) {
 
     }, [isConfig]);
 
-    let getMenuFiles = () => {
-        FileServes.getMenuFile(setBooks)
+    let getMenuFiles = async () => {
+        setLouder(true)
+       await FileServes.getMenuFile(setBooks)
+        setLouder(false)
     }
 
     return (
-        <View style={{...styles.conteiner1}}>
 
+        <View style={{...styles.conteiner1}}>
+            {!louder?
             <Animated.View
                 onTouchStart={e => this.touchStart = e.nativeEvent.pageX}
                 onTouchEnd={e => {
@@ -109,6 +114,11 @@ export default function Bookshelf({navigation}) {
 
 
             </Animated.View>
+                :
+                <View style={styles.container}>
+                    <Loader/>
+                </View>
+            }
         </View>
 
     );
@@ -158,7 +168,6 @@ const styles = StyleSheet.create({
 
         paddingVertical: 5 + '%',
         alignItems: 'center',
-
 
         position: 'absolute',
         right: 2 + '%',

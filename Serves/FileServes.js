@@ -9,7 +9,7 @@ import * as SQLite from "expo-sqlite";
 // import {DOMParser} from "xmldom";
 
 
-const db = SQLite.openDatabase('MobileBook1.db', '', '', '', (tx) => {
+const db = SQLite.openDatabase('MobileBookBD.db', '', '', '', (tx) => {
     console.log("db connect true")
 });
 
