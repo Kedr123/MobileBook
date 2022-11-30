@@ -94,36 +94,58 @@ export default class FileServes {
                 }
             }
         }
+
+        return null;
     }
 
 
     static async getMenuFile(setBooks) {
-
+        // console.log("\x1b[32m","open file start")
         await DocumentPicker.getDocumentAsync({
             copyToCacheDirectory: true,
             type: ['application/epub+zip']
         }).then(async (results) => {
+            // console.log("\x1b[32m","open file true")
             let name = await FileServes.genericUniqueDirectory();
+            let dir = FileSystem.cacheDirectory+"DocumentPicker/"+ name+"/";
 
             await unzip(results.uri, FileSystem.cacheDirectory+'DocumentPicker/' + name)
                 .then(async (path) => {
+                    // console.log("\x1b[32m","unzip file true")
                     if (results != undefined) {
                         switch (results.mimeType) {
                             case 'application/epub+zip': {
+                                // console.log("\x1b[32m","file = EPUB")
                                 let url = results.uri.replace(results.name, '')
                                 let optFile
 
-                                await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+'DocumentPicker/' + name + '/').then(async (uri) => {
+                                await FileSystem.readDirectoryAsync(dir).then(async (uri) => {
 
-
-                                    optFile = await FileServes.searchOptFile(FileSystem.cacheDirectory+'DocumentPicker/' + name + '/', uri);
+                                    optFile = await FileServes.searchOptFile(dir, uri);
+                                    // console.log("\x1b[32m","opf file search = true")
 
                                 }).catch((error) => {
-                                })
+                                    // console.log("\x1b[31m","opf file search = false")
+                                });
 
-                                let book = await BookServes.getEpubBookInfo(optFile)
-                                console.log(await BDBookServes.setBook(db,book))
-                                BDBookServes.getBooks(db, setBooks)
+                                // console.log("\x1b[32m","opf file true")
+                                let book = await BookServes.getEpubBookInfo(optFile);
+
+                                console.log("\x1b[32m","get Book info = true")
+                                // let book = await BookServes.getEpubBookInfo(optFile)
+                                await BDBookServes.setBook(db,book);
+
+                                // Получение id последней добавленной книги
+                                let idBook = await BDBookServes.getEndIdBook(db);
+
+                                //Получение списка ссылок на файлы для чтения
+                                let links =await BookServes.getListLinkFilesContent(optFile);
+
+                                await BookServes.saveEpubBookInBD(db,idBook,links);
+
+                                // Подгрузка загруженной книги в список для отображения на главнной странице
+                                BDBookServes.getBooks(db, setBooks);
+
                             }
                         }
                     }

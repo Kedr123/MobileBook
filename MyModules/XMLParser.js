@@ -15,10 +15,6 @@ export default class XmlParser {
 
     CreateXmlDom(tags) {
 
-        if (tags.length == 1 && typeof tags[0] == "string" && tags[0][0]!='<') {
-            return tags
-        }
-
         let xmlDom = []
         let tag
         let isChildrenTags = false
@@ -28,11 +24,13 @@ export default class XmlParser {
         for (let i = 0; i < tags.length; i++) {
             tag = tags[i]
 
+            // Если является тегом
             if (tag[0] + tag[1] != '<?' && tag[0] + tag[1] != '</' && tag[tag.length - 2] + tag[tag.length - 1] != '/>' && !isChildrenTags && tag[0] == '<') {
                 isChildrenTags = true
 
                 let arrTag = tag.substring(1, tag.length - 1).split(' ')
                 tagName = arrTag[0]
+
 
                 for (let j = 1; j < arrTag.length; j++) {
                     arrTag[j] = arrTag[j].split('=')
@@ -50,6 +48,10 @@ export default class XmlParser {
                 })
 
                 attributes = {}
+            }
+            // Если является вложенным текстом
+            else if(typeof tag == "string" && tags[i][0]!='<' && !isChildrenTags){
+                xmlDom.push(tag)
             }
 
             if (tag == '</' + tagName + '>') {
@@ -125,7 +127,7 @@ export default class XmlParser {
         return null
     }
 
-    getSelectByCastom(property, value, xmlDocument = this.XmlDocument) {
+    getSelectByCustom(property, value, xmlDocument = this.XmlDocument) {
 
         for (let i = 0; i < xmlDocument.length; i++) {
 
@@ -135,14 +137,14 @@ export default class XmlParser {
 
                     return xmlDocument[i]
                 } else if (xmlDocument[i].nestedTags) {
-                    let result = this.getSelectByCastom(property, value, xmlDocument[i].nestedTags)
+                    let result = this.getSelectByCustom(property, value, xmlDocument[i].nestedTags)
                     if (result) return result
 
                 }
             } catch (error) {
 
                 if (xmlDocument[i].nestedTags) {
-                    let result = this.getSelectByCastom(property, value, xmlDocument[i].nestedTags)
+                    let result = this.getSelectByCustom(property, value, xmlDocument[i].nestedTags)
                     if (result) return result
                 }
             }
@@ -155,7 +157,6 @@ export default class XmlParser {
 
     getSelectByAllTagName(tagName, xmlDocument = this.XmlDocument) {
         let result = []
-        // console.log(xmlDocument)
         for (let i = 0; i < xmlDocument.length; i++) {
             if (xmlDocument[i].name == tagName) result.push(xmlDocument[i])
 

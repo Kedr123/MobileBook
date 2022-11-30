@@ -14,7 +14,9 @@ const db = SQLite.openDatabase('MobileBookBD.db', '', '', '', (tx) => {
 });
 
 
+
 export default function Bookshelf({navigation}) {
+    // SQLite.enablePromise(true);
 
     const [books, setBooks] = useState([]);
     const [louder, setLouder] = useState(false);
@@ -30,8 +32,22 @@ export default function Bookshelf({navigation}) {
     }
 
     useEffect(() => {
-        BDBookServes.createTable(db);
-        BDBookServes.getBooks(db, setBooks);
+
+        let request = async () =>{
+            // await BDBookServes.informBDTable(db);
+            // await BDBookServes.onForeignKey(db);
+            await BDBookServes.createTableBooks(db);
+            await BDBookServes.createTableBookmarks(db);
+            await BDBookServes.createTableContents(db);
+            // await BDBookServes.informBDTable(db);
+
+            // Удалить после проверки
+            await BDBookServes.countBD(db);
+
+            BDBookServes.getBooks(db, setBooks);
+        }
+
+        request();
     }, [])
 
     useEffect(() => {
